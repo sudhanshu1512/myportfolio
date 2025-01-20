@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, useScroll, useSpring } from 'framer-motion';
+import { getImageUrl } from "./utils";
 import { TypeAnimation } from 'react-type-animation';
 import {
   Github,
@@ -172,7 +173,7 @@ function App() {
                 transition={{ type: "spring", stiffness: 300 }}
               >
                 <img
-                  src="./profile2.jpg"
+                  src={getImageUrl("profile2.jpg")}
                   alt="Profile"
                   className="rounded-lg shadow-xl"
                 />
@@ -204,9 +205,11 @@ function App() {
                 <div className="flex items-start justify-between">
                   <div>
                     <h3 className="text-xl font-bold text-blue-400">
-                    Marwadi Education Foundation 
+                      Marwadi Education Foundation
                     </h3>
-                    <p className="text-gray-300 mt-1">Bachelor of Technology ( Information Technology )</p>
+                    <p className="text-gray-300 mt-1">
+                      Bachelor of Technology ( Information Technology )
+                    </p>
                   </div>
                   <span className="text-gray-400">2021 - 2025</span>
                 </div>
@@ -291,7 +294,7 @@ function App() {
                   title: "Edusity",
                   description:
                     "This is a project made to learn and expand my understanding optimal user experience across devices.",
-                  image: "/project1.png",
+                  image: getImageUrl("project1.png"),
                   tech: ["React", "Tailwind CSS "],
                   github: "https://github.com/sudhanshu1512/Edu-web",
                   live: "https://edusity-b240.netlify.app/"
@@ -300,7 +303,7 @@ function App() {
                   title: "Task Management App",
                   description:
                     "A collaborative task management application with real-time updates",
-                  image: "/image.png",
+                  image: getImageUrl("image.png"),
                   tech: ["ReactJs", "Tailwind CSS", "Firebase"],
                   github: "https://github.com/sudhanshu1512/project",
                   live: "https://mytodos-0efb.netlify.app/"
