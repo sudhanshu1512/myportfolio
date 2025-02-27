@@ -307,6 +307,15 @@ function App() {
                   tech: ["ReactJs", "Tailwind CSS", "Firebase"],
                   github: "https://github.com/sudhanshu1512/project",
                   live: "https://mytodos-0efb.netlify.app/"
+                },
+             {
+                  title: "Knect",
+                  description:
+                    "A social media platform where user can post,chat,follow/unfollow other users",
+                  image: getImageUrl("image.png"),
+                  tech: ["ReactJs", "Tailwind CSS", "Mongodb","nodeJs","ExpressJs"],
+                  github: "https://github.com/sudhanshu1512/Knect",
+                  live: "https://knect.onrender.com/login"
                 }
               ].map((project, index) => (
                 <motion.div
