@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, useScroll, useSpring } from 'framer-motion';
-import { getImageUrl } from "./utils";
+import { getImageUrl } from "./utils.jsx";
 import { TypeAnimation } from 'react-type-animation';
 import {
   Github,
@@ -159,7 +159,7 @@ function App() {
                   products that make a difference.
                 </p>
                 <motion.a
-                  href="https://drive.google.com/file/d/1xun80MRrVZ5ps5dB-8i2kmwO7g2S3Lav/view?usp=drive_link"
+                  href="https://drive.google.com/file/d/1zCA0y8iLrKc0F87C15kVSOVeO2MQJj9e/view?usp=sharing"
                   className="inline-flex items-center px-6 py-3 bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
@@ -312,10 +312,10 @@ function App() {
                   title: "Knect",
                   description:
                     "A social media platform where user can post,chat,follow/unfollow other users",
-                  image: getImageUrl("image.png"),
+                  image: getImageUrl("knect.png"),
                   tech: ["ReactJs", "Tailwind CSS", "Mongodb","nodeJs","ExpressJs"],
                   github: "https://github.com/sudhanshu1512/Knect",
-                  live: "https://knect.onrender.com/login"
+                  live: "https://knect.onrender.com"
                 }
               ].map((project, index) => (
                 <motion.div
