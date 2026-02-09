@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
-import { motion, useScroll, useSpring } from 'framer-motion';
+import { useState, useEffect } from "react";
+import { motion, useScroll, useSpring } from "framer-motion";
 import { getImageUrl } from "./utils.jsx";
-import { TypeAnimation } from 'react-type-animation';
+import { TypeAnimation } from "react-type-animation";
 import {
   Github,
   Linkedin,
@@ -12,22 +12,42 @@ import {
   Briefcase,
   User,
   Home,
-  GraduationCap
+  GraduationCap,
+  GitBranch,
+  Users,
+  Star,
 } from "lucide-react";
+import { GitHubCalendar } from "react-github-calendar";
 
 function App() {
-  const [activeSection, setActiveSection] = useState('home');
+  const [activeSection, setActiveSection] = useState("home");
+  const [githubStats, setGithubStats] = useState({
+    repos: 0,
+    followers: 0,
+    stars: 0,
+  });
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
     stiffness: 100,
     damping: 30,
-    restDelta: 0.001
+    restDelta: 0.001,
   });
 
+  const githubUsername = "sudhanshu1512";
+
   useEffect(() => {
+    // Scroll handling
     const handleScroll = () => {
-      const sections = ['home', 'about', 'education' , 'skills', 'projects', 'contact'];
-      const currentSection = sections.find(section => {
+      const sections = [
+        "home",
+        "about",
+        "education",
+        "skills",
+        "projects",
+        "contact",
+        "github",
+      ];
+      const currentSection = sections.find((section) => {
         const element = document.getElementById(section);
         if (element) {
           const rect = element.getBoundingClientRect();
@@ -35,13 +55,32 @@ function App() {
         }
         return false;
       });
-      if (currentSection) {
-        setActiveSection(currentSection);
-      }
+      if (currentSection) setActiveSection(currentSection);
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    // GitHub Data Fetching
+    fetch(`https://api.github.com/users/${githubUsername}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setGithubStats((prev) => ({
+          ...prev,
+          repos: data.public_repos,
+          followers: data.followers,
+        }));
+      });
+
+    fetch(`https://api.github.com/users/${githubUsername}/repos`)
+      .then((res) => res.json())
+      .then((repos) => {
+        const totalStars = repos.reduce(
+          (acc, repo) => acc + repo.stargazers_count,
+          0,
+        );
+        setGithubStats((prev) => ({ ...prev, stars: totalStars }));
+      });
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const navItems = [
@@ -49,7 +88,8 @@ function App() {
     { id: "about", icon: User, label: "About" },
     { id: "education", icon: GraduationCap, label: "Education" },
     { id: "skills", icon: Code2, label: "Skills" },
-    { id: "projects", icon: Briefcase, label: "Projects" }
+    { id: "github", icon: Github, label: "GitHub" },
+    { id: "projects", icon: Briefcase, label: "Projects" },
   ];
 
   return (
@@ -95,7 +135,7 @@ function App() {
                   "Front - End Developer",
                   2000,
                   "Problem Solver",
-                  2000
+                  2000,
                 ]}
                 wrapper="span"
                 speed={50}
@@ -258,7 +298,7 @@ function App() {
                 { name: "TypeScript", icon: "📘" },
                 { name: "Node.js", icon: "🟢" },
                 { name: "TailwindCSS", icon: "🎨" },
-                { name: "MongoDB", icon: "🍃" }
+                { name: "MongoDB", icon: "🍃" },
               ].map((skill, index) => (
                 <motion.div
                   key={skill.name}
@@ -297,7 +337,7 @@ function App() {
                   image: getImageUrl("project1.png"),
                   tech: ["React", "Tailwind CSS "],
                   github: "https://github.com/sudhanshu1512/Edu-web",
-                  live: "https://edusity-b240.netlify.app/"
+                  live: "https://edusity-b240.netlify.app/",
                 },
                 {
                   title: "Task Management App",
@@ -306,17 +346,23 @@ function App() {
                   image: getImageUrl("image.png"),
                   tech: ["ReactJs", "Tailwind CSS", "Firebase"],
                   github: "https://github.com/sudhanshu1512/project",
-                  live: "https://mytodos-0efb.netlify.app/"
+                  live: "https://mytodos-0efb.netlify.app/",
                 },
-             {
+                {
                   title: "Knect",
                   description:
                     "A social media platform where user can post,chat,follow/unfollow other users",
                   image: getImageUrl("knect.png"),
-                  tech: ["ReactJs", "Tailwind CSS", "Mongodb","nodeJs","ExpressJs"],
+                  tech: [
+                    "ReactJs",
+                    "Tailwind CSS",
+                    "Mongodb",
+                    "nodeJs",
+                    "ExpressJs",
+                  ],
                   github: "https://github.com/sudhanshu1512/Knect",
-                  live: "https://knect.onrender.com"
-                }
+                  live: "https://knect.onrender.com",
+                },
               ].map((project, index) => (
                 <motion.div
                   key={index}
@@ -369,6 +415,81 @@ function App() {
                   </div>
                 </motion.div>
               ))}
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* GitHub Contribution Section */}
+      <section
+        id="github"
+        className="py-20 bg-gray-900/50 border-t border-gray-800"
+      >
+        <div className="container mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="max-w-5xl mx-auto"
+          >
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-bold mb-4 flex items-center justify-center gap-3">
+                <Code2 className="text-blue-500" size={32} />
+                Contribution Activity
+              </h2>
+              <p className="text-gray-400 max-w-2xl mx-auto">
+                A snapshot of my consistent journey in building software, synced
+                directly with my GitHub profile.
+              </p>
+            </div>
+
+            <div className="bg-gray-800/40 p-8 rounded-2xl border border-gray-700/50 shadow-xl overflow-hidden">
+              <div className="flex justify-center items-center overflow-x-auto mb-8 pb-4">
+                <GitHubCalendar
+                  username={githubUsername}
+                  blockSize={13}
+                  blockMargin={5}
+                  fontSize={14}
+                  theme={{
+                    dark: [
+                      "#161b22",
+                      "#0e4429",
+                      "#006d32",
+                      "#26a641",
+                      "#39d353",
+                    ],
+                  }}
+                  labels={{
+                    totalCount: "{{count}} contributions in the last year",
+                  }}
+                />
+              </div>
+
+              {/* Dynamic GitHub Stats */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pt-8 border-t border-gray-700/50">
+                <div className="text-center flex flex-col items-center">
+                  <GitBranch className="text-blue-500 mb-2" size={24} />
+                  <p className="text-gray-500 text-sm">Public Projects</p>
+                  <p className="text-white text-2xl font-bold">
+                    {githubStats.repos}
+                  </p>
+                </div>
+                <div className="text-center flex flex-col items-center">
+                  <Users className="text-blue-500 mb-2" size={24} />
+                  <p className="text-gray-500 text-sm">Followers</p>
+                  <p className="text-white text-2xl font-bold">
+                    {githubStats.followers}
+                  </p>
+                </div>
+                <div className="text-center flex flex-col items-center">
+                  <Star className="text-blue-500 mb-2" size={24} />
+                  <p className="text-gray-500 text-sm">Total Stars</p>
+                  <p className="text-white text-2xl font-bold">
+                    {githubStats.stars}
+                  </p>
+                </div>
+              </div>
             </div>
           </motion.div>
         </div>
